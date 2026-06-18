@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calculadora Retro</title>
+  <style>
+    :root{
+      --bg:#050805;
+      --panel:#071009;
+      --accent:#39ff14; /* verde fosforescente */
+      --muted:#203020;
+      --btn:#0b1a0b;
+      --glass: rgba(57,255,20,0.06);
+      --shadow: 0 6px 18px rgba(0,0,0,0.6);
+      --radius:12px;
+      --mono: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Courier New', monospace;
+    }
+    html,body{height:100%;}
+    body{
+      margin:0;display:flex;align-items:center;justify-content:center;
+      background: radial-gradient(1200px 400px at 10% 10%, rgba(57,255,20,0.03), transparent), var(--bg);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--accent);
+    }
+    .calc{
+      width:360px;max-width:92vw;background:linear-gradient(180deg,var(--panel),#060806);
+      border-radius:20px;padding:20px;box-shadow:var(--shadow);border:1px solid rgba(57,255,20,0.07);
+      box-sizing:border-box;
+    }
+    .brand{font-family:var(--mono);font-weight:700;letter-spacing:1px;font-size:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+    .screen{
+      background:linear-gradient(180deg,rgba(0,0,0,0.4), rgba(0,0,0,0.25));
+      border-radius:12px;padding:18px;min-height:72px;box-shadow:inset 0 -6px 24px rgba(0,0,0,0.6);
+      display:flex;flex-direction:column;align-items:flex-end;justify-content:center;color:var(--accent);
+      text-shadow:0 1px 0 #062006, 0 0 18px rgba(57,255,20,0.25);
+      border:1px solid rgba(57,255,20,0.06);
+    }
+    .expr{font-family:var(--mono);font-size:14px;opacity:0.8}
+    .display{font-family:var(--mono);font-size:28px;font-weight:600}
+    .pad{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px;align-items:stretch}
+    button{
+      background:linear-gradient(180deg,#051207,#07150a);
+      border:1px solid rgba(57,255,20,0.22);color: #e6ffd6;padding:14px;border-radius:12px;font-size:18px;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.75), 0 0 26px rgba(57,255,20,0.06) inset;
+      cursor:pointer;outline:none;transition:transform .06s ease, box-shadow .12s ease, filter .12s ease;
+      font-family:var(--mono);min-height:56px;display:flex;align-items:center;justify-content:center
+    }
+    button:active{transform:translateY(2px);box-shadow:none}
+    .btn-op{background:linear-gradient(180deg,#062b06,#073006);border:1px solid rgba(57,255,20,0.08)}
+    .btn-eq{grid-column:2 / 4;background:linear-gradient(180deg,#163816,#0d2f0d);box-shadow:0 10px 26px rgba(9,55,9,0.8);color:#eaffdf}
+    .btn-plus{grid-column:4;background:linear-gradient(180deg,#123112,#072a07);box-shadow:0 10px 28px rgba(9,55,9,0.85);align-self:stretch}
+    .btn-warn{background:linear-gradient(180deg,#441111,#2a0b0b);color:#ffb3b3}
+    button:hover{filter:brightness(1.06);}
+    .btn-op:hover, .btn-eq:hover, .btn-plus:hover{filter:brightness(1.12)}
+    .small{font-size:13px;padding:10px}
+    .hint{font-size:12px;opacity:0.6;margin-top:10px}
+    @media(max-width:420px){.calc{width:92vw;padding:16px}.display{font-size:24px}}
+    /* focus outline for accessibility */
+    button:focus{box-shadow:0 0 0 3px rgba(57,255,20,0.12), 0 6px 18px rgba(0,0,0,0.6)}
+  </style>
+</head>
+<body>
+  <main class="calc" role="application" aria-label="Calculadora retro">
+    <div class="brand"><span>RETRO-Calc</span><span style="font-size:12px;opacity:.7">v1</span></div>
+    <div class="screen" id="screen">
+      <div class="expr" id="expr" aria-hidden="true"></div>
+      <div class="display" id="display" role="status" aria-live="polite">0</div>
+    </div>
+
+    <div class="pad" role="group" aria-label="Teclado de la calculadora">
+      <button class="small btn-warn" data-action="clear" aria-label="Limpiar">C</button>
+      <button class="small" data-action="back" aria-label="Borrar">⌫</button>
+      <button class="small" data-value="(" aria-label="Paréntesis abierto">(</button>
+      <button class="small" data-value=")" aria-label="Paréntesis cerrado">)</button>
+
+      <button data-value="7">7</button>
+      <button data-value="8">8</button>
+      <button data-value="9">9</button>
+      <button class="btn-op" data-value="/">÷</button>
+
+      <button data-value="4">4</button>
+      <button data-value="5">5</button>
+      <button data-value="6">6</button>
+      <button class="btn-op" data-value="*">×</button>
+
+      <button data-value="1">1</button>
+      <button data-value="2">2</button>
+      <button data-value="3">3</button>
+      <button class="btn-op" data-value="-">−</button>
+
+      <button data-value="0">0</button>
+      <button data-value=".">.</button>
+      <button class="btn-eq" data-action="equals" aria-label="Igual">=</button>
+      <button class="btn-op btn-plus" data-value="+">+</button>
+    </div>
+
+    <div class="hint">Soporta + − × ÷, paréntesis y entrada por teclado. Enter = Igual.</div>
+  </main>
+
+  <script>
+    (function(){
+      const display = document.getElementById('display');
+      const exprEl = document.getElementById('expr');
+      const screen = document.getElementById('screen');
+      let expr = '';
+
+      function update(){
+        exprEl.textContent = expr || '';
+        display.textContent = expr ? expr : '0';
+      }
+
+      function push(ch){
+        expr += ch;
+        update();
+      }
+
+      function back(){
+        expr = expr.slice(0,-1);
+        update();
+      }
+
+      function clearAll(){ expr = ''; update(); }
+
+      function sanitize(s){
+        // allow digits, operators, dot and parentheses and spaces
+        return s.replace(/[^0-9+\-*/(). ]/g,'');
+      }
+
+      // Shunting-yard algorithm to evaluate safely
+      function evaluate(infix){
+        try{
+          infix = sanitize(infix);
+          if(!infix) return '';
+          const outQueue = [];
+          const opStack = [];
+          const prec = { '+':1,'-':1,'*':2,'/':2 };
+          const assoc = { '+':'L','-':'L','*':'L','/':'L' };
+
+          const tokens = infix.match(/\d+\.?\d*|\.\d+|[+\-*/()]|\s+/g).filter(t=>!/^\s+$/.test(t));
+          for(const token of tokens){
+            if(/\d|\./.test(token[0])){ outQueue.push(parseFloat(token)); }
+            else if(token in prec){
+              while(opStack.length){
+                const top = opStack[opStack.length-1];
+                if(top in prec && ((assoc[token]==='L' && prec[token]<=prec[top]) || (assoc[token]==='R' && prec[token]<prec[top]))){
+                  outQueue.push(opStack.pop());
+                  continue;
+                }
+                break;
+              }
+              opStack.push(token);
+            } else if(token==='('){ opStack.push(token);
+            } else if(token===')'){
+              while(opStack.length && opStack[opStack.length-1] !== '(') outQueue.push(opStack.pop());
+              if(opStack.length && opStack[opStack.length-1] === '(') opStack.pop();
+              else throw new Error('Paréntesis no balanceados');
+            } else { throw new Error('Token inválido: '+token); }
+          }
+          while(opStack.length){ const t = opStack.pop(); if(t==='('||t===')') throw new Error('Paréntesis no balanceados'); outQueue.push(t); }
+
+          // evaluate RPN
+          const stack = [];
+          for(const token of outQueue){
+            if(typeof token === 'number') stack.push(token);
+            else{
+              const b = stack.pop(); const a = stack.pop();
+              if(a===undefined || b===undefined) throw new Error('Expresión inválida');
+              let v;
+              if(token==='+') v = a + b;
+              else if(token==='-') v = a - b;
+              else if(token==='*') v = a * b;
+              else if(token==='/') v = a / b;
+              else throw new Error('Operador inválido');
+              stack.push(v);
+            }
+          }
+          if(stack.length !== 1) throw new Error('Expresión inválida');
+          const res = stack[0];
+          if(!isFinite(res)) throw new Error('Resultado no finito');
+          // pretty format: trim trailing zeros
+          return (Math.round((res + Number.EPSILON) * 1e12) / 1e12).toString();
+        }catch(e){ return 'Error'; }
+      }
+
+      // handle clicks
+      document.querySelectorAll('[data-value]').forEach(b=>b.addEventListener('click', ()=>{ push(b.getAttribute('data-value')); }));
+      document.querySelectorAll('[data-action="clear"]').forEach(b=>b.addEventListener('click', clearAll));
+      document.querySelectorAll('[data-action="back"]').forEach(b=>b.addEventListener('click', back));
+      document.querySelectorAll('[data-action="equals"]').forEach(b=>b.addEventListener('click', ()=>{
+        const r = evaluate(expr);
+        expr = (r==='Error')? '' : r;
+        display.textContent = r;
+        exprEl.textContent = '';
+      }));
+
+      // keyboard support
+      window.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter'){
+          e.preventDefault(); document.querySelector('[data-action="equals"]').click(); return;
+        }
+        if(e.key === 'Backspace'){ e.preventDefault(); back(); return; }
+        if(e.key === 'Escape'){ clearAll(); return; }
+        if(/^[0-9]$/.test(e.key) || e.key === '.') { push(e.key); return; }
+        if(['+','-','*','/','(',')'].includes(e.key)){ push(e.key); return; }
+      });
+
+      // init
+      update();
+    })();
+  </script>
+</body>
+</html>
