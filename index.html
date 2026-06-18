@@ -38,7 +38,7 @@
     }
     .expr{font-family:var(--mono);font-size:14px;opacity:0.8}
     .display{font-family:var(--mono);font-size:28px;font-weight:600}
-    .pad{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px;align-items:stretch}
+    .pad{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px;align-items:stretch;grid-auto-rows:56px}
     button{
       background:linear-gradient(180deg,#051207,#07150a);
       border:1px solid rgba(57,255,20,0.22);color: #e6ffd6;padding:14px;border-radius:12px;font-size:18px;
@@ -48,7 +48,7 @@
     }
     button:active{transform:translateY(2px);box-shadow:none}
     .btn-op{background:linear-gradient(180deg,#062b06,#073006);border:1px solid rgba(57,255,20,0.08)}
-    .btn-eq{grid-column:2 / 4;background:linear-gradient(180deg,#163816,#0d2f0d);box-shadow:0 10px 26px rgba(9,55,9,0.8);color:#eaffdf}
+    .btn-eq{grid-column:3;background:linear-gradient(180deg,#163816,#0d2f0d);box-shadow:0 8px 20px rgba(9,55,9,0.8);color:#eaffdf;padding:10px;font-size:16px}
     .btn-plus{grid-column:4;background:linear-gradient(180deg,#123112,#072a07);box-shadow:0 10px 28px rgba(9,55,9,0.85);align-self:stretch}
     .btn-warn{background:linear-gradient(180deg,#441111,#2a0b0b);color:#ffb3b3}
     button:hover{filter:brightness(1.06);}
