@@ -10,6 +10,9 @@
 ```
 ```
 # Le metemos lo que queremos en lenguaje natural
-
+# Con PLAN no crea código
+```
+```
+# Quiero crear una calculador retro visualmente atractica, con el menos gasto de tokens posible.
 ```
 
