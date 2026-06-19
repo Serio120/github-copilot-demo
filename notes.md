@@ -13,3 +13,6 @@
 ```
 # Quiero crear una calculador retro visualmente atractica, con el menos gasto de tokens posible.
 ```
+```
+# Recuerda: PLAN para planificar lo que deseas y Agent cuando quires crear algo concreto
+```
