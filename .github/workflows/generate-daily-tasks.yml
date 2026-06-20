@@ -16,13 +16,15 @@ jobs:
 
       - name: Generar daily-tasks.md
         run: |
-          DATE=$(date -u +"%Y-%m-%d")
-          cat > daily-tasks.md <<EOF
-          # Tareas diarias
+          python3 - <<'PY'
+          from datetime import date
+          from pathlib import Path
+
+          content = f"""# Tareas diarias
           > Generado automáticamente por `.github/workflows/generate-daily-tasks.yml`
 
           ## Fecha
-          $DATE
+          {date.today().isoformat()}
 
           ## Objetivo del día
           - Avanzar en el prototipo de calculadora retro para que sea estable y pueda publicarse como demo.
@@ -43,7 +45,10 @@ jobs:
           ## Notas
           - El archivo se reescribe cada día si se ejecuta el workflow.
           - Cambia estas tareas según prioridades del proyecto.
-          EOF
+          """
+
+          Path('daily-tasks.md').write_text(content)
+          PY
 
       - name: Commit and push if changed
         run: |
