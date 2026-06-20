@@ -17,7 +17,7 @@ jobs:
       - name: Generar daily-tasks.md
         run: |
           DATE=$(date -u +"%Y-%m-%d")
-          cat > daily-tasks.md <<'EOF'
+          cat > daily-tasks.md <<EOF
 # Tareas diarias
 > Generado automáticamente por `.github/workflows/generate-daily-tasks.yml`
 
