@@ -1,0 +1,58 @@
+name: Generar tareas diarias
+
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generar daily-tasks.md
+        run: |
+          DATE=$(date -u +"%Y-%m-%d")
+          cat > daily-tasks.md <<'EOF'
+# Tareas diarias
+> Generado automáticamente por `.github/workflows/generate-daily-tasks.yml`
+
+## Fecha
+$DATE
+
+## Objetivo del día
+- Avanzar en el prototipo de calculadora retro para que sea estable y pueda publicarse como demo.
+
+## Tareas
+1. Validar que `index.html` funciona en un navegador.
+2. Revisar la lógica actual de cálculo y manejo de errores.
+3. Mejorar accesibilidad: etiquetas `aria`, foco visible y navegación por teclado.
+4. Revisar `README.md` y `notes.md` para alinear el progreso.
+5. Considerar crear `assets/` para capturas y actualizar badges.
+
+## Ideas de mejora
+- Añadir historial y deshacer/rehacer.
+- Agregar tests automáticos o scripts de validación.
+- Preparar despliegue con GitHub Pages.
+- Refinar diseño móvil y visual retro.
+
+## Notas
+- El archivo se reescribe cada día si se ejecuta el workflow.
+- Cambia estas tareas según prioridades del proyecto.
+EOF
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- daily-tasks.md; then
+            echo "No changes to commit"
+          else
+            git add daily-tasks.md
+            git commit -m "chore: actualizar daily-tasks.md"
+            git push
+          fi
