@@ -22,11 +22,12 @@
 - Registrar el cambio en el archivo de progreso diario.
 
 ### Trabajo realizado
-- Añadida nueva fila con botón **√ (Raíz cuadrada)** a la calculadora.
+- Añadida nueva fila con botón **√ (Raíz cuadrada)** a la calculadora en la **segunda fila** (justo debajo de C).
 - Implementada función `applySqrt()` que calcula la raíz cuadrada del número actual con manejo de errores.
 - Añadidos tres botones vacíos para mantener la alineación visual de la cuadrícula (4 columnas).
 - Implementado atajo de teclado **Shift+R** para activar la raíz cuadrada.
 - Actualizado `index.html` con CSS para botones fantasma (`.empty-slot`) y manejadores de eventos.
+- **Ajuste de posición:** Reposicionado el botón √ de la quinta fila a la segunda fila para mejor accesibilidad y coherencia visual.
 
 ### Cómo usar
 - **Botón:** Introduce un número y haz clic en **√** para calcular su raíz cuadrada.
