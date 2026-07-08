@@ -237,7 +237,7 @@
         if(e.key === 'Backspace'){ e.preventDefault(); back(); return; }
         if(e.key === 'Escape'){ clearAll(); return; }
         if((e.key === 'r' || e.key === 'R') && e.shiftKey){ e.preventDefault(); applySqrt(); return; }
-        if(e.key === '2' && e.shiftKey){ e.preventDefault(); applyPow2(); return; }
+        if(e.code === 'Digit2' && e.shiftKey){ e.preventDefault(); applyPow2(); return; }
         if(/^[0-9]$/.test(e.key) || e.key === '.') { push(e.key); return; }
         if(['+','-','*','/','(',')'].includes(e.key)){ push(e.key); return; }
       });
