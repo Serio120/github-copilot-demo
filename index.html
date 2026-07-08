@@ -76,7 +76,7 @@
       <button class="small" data-value=")" aria-label="Paréntesis cerrado">)</button>
 
       <button class="btn-op" data-action="sqrt" aria-label="Raíz cuadrada">√</button>
-      <button class="small empty-slot" aria-hidden="true"></button>
+      <button class="btn-op" data-action="pow2" aria-label="Elevar al cuadrado">x²</button>
       <button class="small empty-slot" aria-hidden="true"></button>
       <button class="small empty-slot" aria-hidden="true"></button>
 
@@ -140,6 +140,19 @@
           if(result < 0) throw new Error('No se puede calcular la raíz de un número negativo');
           const sqrt_result = Math.sqrt(result);
           expr = (Math.round((sqrt_result + Number.EPSILON) * 1e12) / 1e12).toString();
+          update();
+        }catch(e){
+          display.textContent = 'Error: ' + e.message;
+          expr = '';
+        }
+      }
+
+      function applyPow2(){
+        try{
+          const result = parseFloat(expr);
+          if(isNaN(result)) throw new Error('Valor inválido');
+          const pow_result = Math.pow(result, 2);
+          expr = (Math.round((pow_result + Number.EPSILON) * 1e12) / 1e12).toString();
           update();
         }catch(e){
           display.textContent = 'Error: ' + e.message;
@@ -214,6 +227,7 @@
         exprEl.textContent = '';
       }));
       document.querySelectorAll('[data-action="sqrt"]').forEach(b=>b.addEventListener('click', applySqrt));
+      document.querySelectorAll('[data-action="pow2"]').forEach(b=>b.addEventListener('click', applyPow2));
 
       // keyboard support
       window.addEventListener('keydown', (e)=>{
@@ -223,6 +237,7 @@
         if(e.key === 'Backspace'){ e.preventDefault(); back(); return; }
         if(e.key === 'Escape'){ clearAll(); return; }
         if((e.key === 'r' || e.key === 'R') && e.shiftKey){ e.preventDefault(); applySqrt(); return; }
+        if(e.key === '2' && e.shiftKey){ e.preventDefault(); applyPow2(); return; }
         if(/^[0-9]$/.test(e.key) || e.key === '.') { push(e.key); return; }
         if(['+','-','*','/','(',')'].includes(e.key)){ push(e.key); return; }
       });
