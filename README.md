@@ -1,6 +1,5 @@
 # github-copilot-demo
 
-
 ## Registro de progreso
 
 Este repositorio incluye un archivo `progress.md` que se usa para documentar el avance de cada sesión o cada día.
