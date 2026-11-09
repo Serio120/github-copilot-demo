@@ -1,4 +1,19 @@
-# Retro-Calc — Demo de calculadora retro (prototipo)
+# github-copilot-demo
+
+## Retro-Calc — Demo de calculadora retro (prototipo)
+
+## Registro de progreso
+
+Este repositorio incluye un archivo `progress.md` que se usa para documentar el avance de cada sesión o cada día.
+
+Añade una entrada al final de `progress.md` cuando termines una sesión, usando este formato:
+
+- `## YYYY-MM-DD`
+- `### Objetivos`
+- `### Trabajo realizado`
+- `### Próximos pasos`
+
+Esto permite llevar un historial claro y sencillo del progreso del proyecto.
 
 ![build/status](REPLACE_WITH_BADGE_URL) ![license: MIT](REPLACE_WITH_BADGE_URL)
 
